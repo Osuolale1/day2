@@ -1,17 +1,27 @@
 import { ethers } from "hardhat";
+import { ChainlinkVRFConsumer__factory } from "../typechain";
 
 async function main() {
     const [deployer] = await ethers.getSigners();
 
     console.log("Deploying contracts with the account:", deployer.address);
 
-    // Example: Replace 'VRFConsumerBase' with the actual contract name you want to deploy
-    const ContractFactory = await ethers.getContractFactory("ChainlinkVRFConsumer");
+    // Replace these with actual addresses
+    const vrfCoordinatorAddress = ""; // Address of the Chainlink VRF Coordinator
+    const linkTokenAddress = ""; // Address of the Chainlink LINK Token
 
-    // Deploy your contract here
-    const contract = await ContractFactory.deploy();
+    const chainlinkVRFConsumerFactory = (await ethers.getContractFactory(
+        "ChainlinkVRFConsumer"
+    )) as ChainlinkVRFConsumer__factory;
 
-    console.log("Contract deployed to:", contract.address);
+    const chainlinkVRFConsumer = await chainlinkVRFConsumerFactory.deploy(
+        vrfCoordinatorAddress,
+        linkTokenAddress
+    );
+
+    await chainlinkVRFConsumer.deployed();
+
+    console.log("ChainlinkVRFConsumer deployed to:", chainlinkVRFConsumer.address);
 }
 
 main()
